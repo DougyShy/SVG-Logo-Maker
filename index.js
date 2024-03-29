@@ -2,9 +2,6 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 
 const {Triangle, Circle, Square} = require('./lib/shapes.js');
-//const {Triangle, Circle, Square} = require('./lib/shapes.js');
-
-
 
 const text = 'BIL';
 const text_color = "black";
@@ -30,24 +27,45 @@ inquirer
         {
             type: 'input',
             name: 'text',
-            message: 'Enter up to three (3) letters for your .svg logo:'
+            message: 'Enter up to three (3) letters for your .svg logo:',
         },
         {
             type: 'input', 
             name: 'text_color',
-            message: 'Enter the color of the logo text (by keyword OR a hexadecimal number):'
+            message: 'Enter the color of the logo text (by keyword OR a hexadecimal number):',
         },
         {
             type: 'list',
             name: 'shape',
-            message: 'Choose which shape you would like your logo to be:'
-        }
+            message: 'Choose which shape you would like your logo to be:',
+            choices: ['Circle', 'Square', 'Triangle'],
+        },
+        {
+            type: 'input',
+            name: 'shape_color',
+            message: 'Enter the color of the logo shape (by keyword OR a hexadecimal number):',
+        },
     ])
+    .then(answers => {
+        let logoShape = undefined; 
+        switch(answers.shape) {
+            case 'Circle':
+                logoShape = new Circle(answers.text, answers.text_color, answers.shape_color);
+                break;
+            case 'Square':
+                logoShape = new Square(answers.text, answers.text_color, answers.shape_color);
+                break;
+            case 'Triangle':
+                logoShape = new Triangle(answers.text, answers.text_color, answers.shape_color);
+                break;
+        }
+        fs.writeFile('./examples/' + logoShape.text.substring(0,3) + '-' + logoShape.text_color + '.svg', generateSVG(logoShape.text.substring(0,3), logoShape.text_color, logoShape.render()), err => {
+            if (err) {
+                console.log('Error writing to file:', err);
+                return; 
+            }
+            console.log('File write operation completed');
+        });
+    });
 
-fs.writeFile('./examples/' + myShape.text + '-' + myShape.text_color + '.svg', generateSVG(myShape.text, myShape.text_color, myShape.render()), err => {
-    if (err) {
-        console.log('Error writing to file:', err);
-        return;
-    }
-    console.log('File write operation completed');
-});
+
