@@ -1,7 +1,6 @@
 # SVG-Logo-Maker
 Simple SVG Logo Maker - command prompt via Inquirer
 
-# Professional README Generator
 This project allows the user to create a simple logo in .svg format 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
